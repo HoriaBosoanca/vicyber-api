@@ -1,2 +1,2 @@
-curl -i -X DELETE http://localhost:3000/article/7 \
--H "Content-Type: application/json" \
+curl -X DELETE http://localhost:3000/article/8 \
+-H "Authorization: "

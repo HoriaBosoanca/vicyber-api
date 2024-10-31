@@ -1,6 +1,4 @@
-curl -i -X POST http://localhost:3000/article \
+curl -X POST http://localhost:3000/article \
+-H "Authorization: " \
 -H "Content-Type: application/json" \
--d '{
-    "title": "Helllo WOrllld!!!",
-    "content": "In this article, we will explore the basics of Go programming, covering fundamental concepts such as goroutines, channels, and the standard stddddddaaaddddd."
-}'
+-d '{"title": "New Article", "content": "This is the content of the article."}'

@@ -21,6 +21,10 @@ func HandleArticle(router *mux.Router) {
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
+	// check api key
+	if !CheckApiKey(w, r) {
+		return
+	}
 	// get article from req body
 	var article Article
 	if err := json.NewDecoder(r.Body).Decode(&article); err != nil {
@@ -30,13 +34,18 @@ func createArticle(w http.ResponseWriter, r *http.Request) {
 	// add article to database
 	if DB.Create(&article).Error != nil {
 		http.Error(w, "Failed to create article", http.StatusInternalServerError)
-        return
+		return
 	}
-	// send response
+	// send
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(article)
 }
 
 func getArticle(w http.ResponseWriter, r *http.Request) {
+	// check api key
+	if !CheckApiKey(w, r) {
+		return
+	}
 	// get all articles from DB
 	var articles []Article
 	if err := DB.Find(&articles).Error; err != nil {
@@ -44,10 +53,15 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// send response
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(articles)
 }
 
 func getArticleByID(w http.ResponseWriter, r *http.Request) {
+	// check api key
+	if !CheckApiKey(w, r) {
+		return
+	}
 	// get id url parameter
 	urlParams := mux.Vars(r) // returns map of string urlParam indentifiers to string urlParam values
 	id, err := strconv.Atoi(urlParams["id"])
@@ -62,10 +76,15 @@ func getArticleByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// send response
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(article)
 }
 
 func updateArticle(w http.ResponseWriter, r *http.Request) {
+	// check api key
+	if !CheckApiKey(w, r) {
+		return
+	}
 	// get id url param
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -86,10 +105,15 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	}
 	DB.Save(&article)
 	// send response with updated article
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(article)
 }
 
 func deleteArticle(w http.ResponseWriter, r *http.Request) {
+	// check api key
+	if !CheckApiKey(w, r) {
+		return
+	}
 	// get id from url params
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
