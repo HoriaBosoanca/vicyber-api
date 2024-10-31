@@ -1,5 +1,2 @@
-INFO: 2024/10/31 20:48:09 articleController.go:151: 
-INFO: 2024/10/31 20:55:10 articleController.go:162: 
-INFO: 2024/10/31 21:08:39 articleController.go:162: vicyberthebest
-INFO: 2024/10/31 21:11:59 articleController.go:162: vicyberthebest
-INFO: 2024/10/31 21:14:32 articleController.go:162: vicyberthebest
+INFO: 2024/10/31 21:23:20 security.go:34: Correct api key!
+INFO: 2024/10/31 21:24:02 security.go:34: yourcomputerhasvirus
