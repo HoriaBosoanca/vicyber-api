@@ -47,7 +47,7 @@ func main() {
 	}
 	db.AutoMigrate(&User{})
 
-	user := User{Name: "Hi Doe", Email: "hi.doe@example.com"}
+	user := User{Name: "Hii Doe", Email: "hii.doe@example.com"}
 	result := db.Create(&user)
 	if result.Error != nil {
 		log.Fatal("Error creating user:", result.Error)
