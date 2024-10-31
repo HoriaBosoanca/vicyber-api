@@ -1,0 +1,107 @@
+package server
+
+import (
+	// stdlib
+	"strconv"
+
+	// endpoint
+	"encoding/json"
+	"net/http"
+
+	// router
+	"github.com/gorilla/mux"
+)
+
+func HandleArticle(router *mux.Router) {
+	router.HandleFunc("/article", createArticle).Methods("POST")
+	router.HandleFunc("/article", getArticle).Methods("GET")
+	router.HandleFunc("/article/{id}", getArticleByID).Methods("GET")
+	router.HandleFunc("/article/{id}", updateArticle).Methods("PUT")
+	router.HandleFunc("/article/{id}", deleteArticle).Methods("DELETE")
+}
+
+func createArticle(w http.ResponseWriter, r *http.Request) {
+	// get article from req body
+	var article Article
+	if err := json.NewDecoder(r.Body).Decode(&article); err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+	// add article to database
+	if DB.Create(&article).Error != nil {
+		http.Error(w, "Failed to create article", http.StatusInternalServerError)
+        return
+	}
+	// send response
+	json.NewEncoder(w).Encode(article)
+}
+
+func getArticle(w http.ResponseWriter, r *http.Request) {
+	// get all articles from DB
+	var articles []Article
+	if err := DB.Find(&articles).Error; err != nil {
+		http.Error(w, "Could not fetch articles", http.StatusInternalServerError)
+		return
+	}
+	// send response
+	json.NewEncoder(w).Encode(articles)
+}
+
+func getArticleByID(w http.ResponseWriter, r *http.Request) {
+	// get id url parameter
+	urlParams := mux.Vars(r) // returns map of string urlParam indentifiers to string urlParam values
+	id, err := strconv.Atoi(urlParams["id"])
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+	// find the desired article using that ID
+	var article Article
+	if err := DB.First(&article, id).Error; err != nil {
+		http.Error(w, "Article not found", http.StatusNotFound)
+		return
+	}
+	// send response
+	json.NewEncoder(w).Encode(article)
+}
+
+func updateArticle(w http.ResponseWriter, r *http.Request) {
+	// get id url param
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+	// find first (and only) article with matching id
+	var article Article
+	if DB.First(&article, id).Error != nil {
+		http.Error(w, "Article not found", http.StatusNotFound)
+		return
+	}
+	// overwrite article from req body on top of existing DB article
+	if err := json.NewDecoder(r.Body).Decode(&article); err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+	DB.Save(&article)
+	// send response with updated article
+	json.NewEncoder(w).Encode(article)
+}
+
+func deleteArticle(w http.ResponseWriter, r *http.Request) {
+	// get id from url params
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+	// find article with said id and delete it
+	if DB.Delete(&Article{}, id).Error != nil {
+		http.Error(w, "Article not found", http.StatusNotFound)
+		return
+	}
+	// give empty response
+	w.WriteHeader(http.StatusNoContent)
+}
