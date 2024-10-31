@@ -22,6 +22,6 @@ func main() {
 	r := mux.NewRouter()
 	server.HandleArticle(r)
 
-	log.Println("Server starting on http://localhost:3000")
-	log.Fatal(http.ListenAndServe(":3000", r))
+	log.Println("Server starting on http://localhost:8010")
+	log.Fatal(http.ListenAndServe(":8010", r))
 }
