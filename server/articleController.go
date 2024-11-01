@@ -18,6 +18,7 @@ func HandleArticle(router *mux.Router) {
 	router.HandleFunc("/article/{id}", getArticleByID).Methods("GET")
 	router.HandleFunc("/article/{id}", updateArticle).Methods("PUT")
 	router.HandleFunc("/article/{id}", deleteArticle).Methods("DELETE")
+	router.HandleFunc("/article", OptionsHandler).Methods("OPTIONS")
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
