@@ -21,10 +21,11 @@ func main() {
 
 	// route
 	r := mux.NewRouter()
-	server.HandleArticle(r)
-
 	// CORS
 	r.Use(server.EnableCORS)
+	// article endpoint
+	server.HandleArticle(r)
+
 
 	// log and serve
 	log.Println("Server starting on http://localhost:8010")
