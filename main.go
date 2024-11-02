@@ -35,3 +35,8 @@ func main() {
 	log.Println("Server starting.")
 	log.Fatal(http.ListenAndServe(":"+port, handler.Router))
 }
+
+// Handler function for Vercel
+func Handler(w http.ResponseWriter, r *http.Request) {
+	handler.Router.ServeHTTP(w, r)
+}

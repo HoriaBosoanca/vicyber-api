@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"net/http"
+	// "net/http"
 
 	"github.com/gorilla/mux"
 )
@@ -15,7 +15,3 @@ func InitializeRouter() *mux.Router {
 	return Router
 }
 
-// Handler function for Vercel
-func Handler(w http.ResponseWriter, r *http.Request) {
-	Router.ServeHTTP(w, r)
-}
