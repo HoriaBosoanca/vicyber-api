@@ -14,9 +14,8 @@ import (
 
 	// rest of packages
 	"server/server"
+	"server/handler"
 )
-
-var router *mux.Router
 
 func main() {
 	// database conectiviy
@@ -24,9 +23,9 @@ func main() {
 	server.DoMigrations(server.DB)
 
 	// route
-	router = mux.NewRouter()
-	router.Use(server.EnableCORS)
-	server.HandleArticle(router)
+	handler.Router = mux.NewRouter()
+	handler.Router.Use(server.EnableCORS)
+	server.HandleArticle(handler.Router)
 
 	// log and serve
 	port := os.Getenv("PORT") // get vercel default port
@@ -34,10 +33,5 @@ func main() {
 		port = "8080"
 	}
 	log.Println("Server starting.")
-	log.Fatal(http.ListenAndServe(":"+port, router))
-}
-
-// for vercel
-func Handler(w http.ResponseWriter, r *http.Request) {
-	router.ServeHTTP(w, r)
+	log.Fatal(http.ListenAndServe(":"+port, handler.Router))
 }
