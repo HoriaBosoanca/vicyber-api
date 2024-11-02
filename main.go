@@ -14,8 +14,8 @@ import (
 
 	// rest of packages
 	"server/server"
-)
-
+) 
+ 
 var router *mux.Router
 
 func main() {
