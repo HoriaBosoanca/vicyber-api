@@ -8,11 +8,15 @@ import (
 	"net/http"
 
 	// router
+	"os"
+
 	"github.com/gorilla/mux"
 
 	// rest of packages
 	"server/server"
 )
+
+var router *mux.Router
 
 func main() {
 	// database conectiviy
@@ -20,11 +24,20 @@ func main() {
 	server.DoMigrations(server.DB)
 
 	// route
-	r := mux.NewRouter()
-	r.Use(server.EnableCORS)
-	server.HandleArticle(r)
+	router = mux.NewRouter()
+	router.Use(server.EnableCORS)
+	server.HandleArticle(router)
 
 	// log and serve
-	log.Println("Server starting on http://localhost:8010")
-	log.Fatal(http.ListenAndServe(":8010", r))
+	port := os.Getenv("PORT") // get vercel default port
+	if port == "" {
+		port = "8080"
+	}
+	log.Println("Server starting.")
+	log.Fatal(http.ListenAndServe(":"+port, router))
+}
+
+// for vercel
+func Handler(w http.ResponseWriter, r *http.Request) {
+	router.ServeHTTP(w, r)
 }

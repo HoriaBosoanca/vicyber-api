@@ -15,7 +15,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() *gorm.DB {
-	connection := os.Getenv("VICYBERPOSTGRES")
+	connection := os.Getenv("POSTGRES_URL")
 	db, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
