@@ -44,9 +44,9 @@ func createArticle(w http.ResponseWriter, r *http.Request) {
 
 func getArticle(w http.ResponseWriter, r *http.Request) {
 	// check api key
-	if !CheckApiKey(w, r) {
-		return
-	}
+	// if !CheckApiKey(w, r) {
+	// 	return
+	// }
 	// get all articles from DB
 	var articles []Article
 	if err := DB.Find(&articles).Error; err != nil {
@@ -60,9 +60,9 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 
 func getArticleByID(w http.ResponseWriter, r *http.Request) {
 	// check api key
-	if !CheckApiKey(w, r) {
-		return
-	}
+	// if !CheckApiKey(w, r) {
+	// 	return
+	// }
 	// get id url parameter
 	urlParams := mux.Vars(r) // returns map of string urlParam indentifiers to string urlParam values
 	id, err := strconv.Atoi(urlParams["id"])
