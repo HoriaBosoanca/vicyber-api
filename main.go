@@ -1,16 +1,10 @@
 package main
 
 import (
-	// logging
+	"os"
 	"log"
-
-	// endpoint
 	"net/http"
-
-	// router
 	"github.com/gorilla/mux"
-
-	// rest of packages
 	"server/server"
 ) 
  
@@ -26,8 +20,13 @@ func main() {
 	router.Use(server.EnableCORS)
 	server.HandleArticle(router)
 
-	log.Println("Server starting.")
-	log.Fatal(http.ListenAndServe(":8010", router))
+	// Listen on port
+	port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080"
+    }
+	log.Printf("Server starting on port %s.", port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
 
 // Handler function for Vercel
