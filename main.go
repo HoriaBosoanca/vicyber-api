@@ -19,6 +19,7 @@ func main() {
 	router = mux.NewRouter()
 	router.Use(server.EnableCORS)
 	server.HandleArticle(router)
+	server.HandleImage(router)
 
 	// Listen on port
 	port := os.Getenv("PORT")
@@ -29,7 +30,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
 
-// Handler function for Vercel
-func Handler(w http.ResponseWriter, r *http.Request) {
-	router.ServeHTTP(w, r)
-}
+// Handler function
+// func Handler(w http.ResponseWriter, r *http.Request) {
+// 	router.ServeHTTP(w, r)
+// }
