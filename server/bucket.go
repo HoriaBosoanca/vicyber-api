@@ -16,7 +16,7 @@ func AddImageToBucket(imageData []byte) (string, error) {
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 		return "", err
-	}
+	} 
 	defer client.Close()
 
 	bucketName := "vicyberbucket"
