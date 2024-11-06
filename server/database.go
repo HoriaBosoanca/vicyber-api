@@ -25,4 +25,5 @@ func ConnectDB() *gorm.DB {
 
 func DoMigrations(db *gorm.DB) {
 	db.AutoMigrate(&Article{})
+	db.AutoMigrate(&Image{})
 }

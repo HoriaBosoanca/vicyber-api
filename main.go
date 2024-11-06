@@ -29,8 +29,3 @@ func main() {
 	log.Printf("Server starting on port %s.", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
-
-// Handler function
-// func Handler(w http.ResponseWriter, r *http.Request) {
-// 	router.ServeHTTP(w, r)
-// }

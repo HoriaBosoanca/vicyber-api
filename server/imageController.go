@@ -37,13 +37,23 @@ func createImage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to decode image", http.StatusBadRequest)
 		return
 	}
-	log.Println(imageData)
-	// imageurl := AddImageToBucket(string(imageData))
-	// db.add(imageurl)
+	log.Println(len(imageData))
+	imageurl, err := AddImageToBucket(imageData)
+	if err != nil {
+		http.Error(w, "Failed to create image", http.StatusInternalServerError)
+		return
+	}
+	log.Println(imageurl)
+
+	imgurl := Image{Data: imageurl}
+	if DB.Create(&imgurl).Error != nil {
+		http.Error(w, "Failed to create image", http.StatusInternalServerError)
+		return
+	}
 
 	// send base64 image back in json
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(base64Img)
+	json.NewEncoder(w).Encode(imgurl)
 }
 
 func decodeBase64Img(base64ImgData string) ([]byte, error) {
