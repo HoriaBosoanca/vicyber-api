@@ -12,7 +12,9 @@ import (
 
 func HandleImage(router *mux.Router) {
 	router.HandleFunc("/image", createImage).Methods("POST")
-	router.HandleFunc("/image/{id}", getImageByID).Methods("GET")
+	router.HandleFunc("/image/{id}", getImageByID).Methods("GET") 
+	router.HandleFunc("/image", OptionsHandler).Methods("OPTIONS")
+	router.HandleFunc("/image/{id}", OptionsHandler).Methods("OPTIONS")
 }
 
 type Image struct {
