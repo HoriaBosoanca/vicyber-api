@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
-	// "os"
+	"net/http"
+	"io"
 	"time"
 
 	"cloud.google.com/go/storage"
-	// "google.golang.org/api/option"
 )
 
 func AddImageToBucket(imageData []byte) (string, error) {
@@ -48,4 +48,26 @@ func AddImageToBucket(imageData []byte) (string, error) {
 	log.Println("Image uploaded successfully. URL:", url)
 
 	return url, nil
+}
+
+func GetImageFromBucket(imageUrl string) ([]byte, error) {
+	// Send an HTTP GET request to fetch the image
+	resp, err := http.Get(imageUrl)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch image: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Check if the request was successful
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch image: status code %d", resp.StatusCode)
+	}
+
+	// Read the image data
+	imageData, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read image data: %w", err)
+	}
+
+	return imageData, nil
 }
