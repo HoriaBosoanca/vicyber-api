@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -13,6 +14,7 @@ import (
 func HandleImage(router *mux.Router) {
 	router.HandleFunc("/image", createImage).Methods("POST")
 	router.HandleFunc("/image/{id}", getImageByID).Methods("GET") 
+	router.HandleFunc("/image/{id}", deleteImage).Methods("DELETE") 
 	router.HandleFunc("/image", OptionsHandler).Methods("OPTIONS")
 	router.HandleFunc("/image/{id}", OptionsHandler).Methods("OPTIONS")
 }
@@ -95,4 +97,39 @@ func getImageByID(w http.ResponseWriter, r *http.Request) {
 func encodeImage(imageData []byte) string {
 	base64Image := base64.StdEncoding.EncodeToString(imageData)
 	return base64Image
+}
+
+func deleteImage(w http.ResponseWriter, r *http.Request) {
+	if !CheckApiKey(w, r) {
+		return
+	}
+
+	// Get the image ID from the URL path
+	vars := mux.Vars(r)
+	imageID := vars["id"]
+
+	// Retrieve the image from the database
+	var image Image
+	if err := DB.First(&image, imageID).Error; err != nil {
+		http.Error(w, "Image not found", http.StatusNotFound)
+		return
+	}
+
+	// Step 1: Delete the image from the storage bucket
+	err := DeleteImageFromBucket(image.Data) // image.Data contains the image URL or identifier
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Failed to delete image from bucket", http.StatusInternalServerError)
+		return
+	}
+
+	// Step 2: Delete the image from the database
+	if err := DB.Delete(&image).Error; err != nil {
+		http.Error(w, "Failed to delete image from database", http.StatusInternalServerError)
+		return
+	}
+
+	// Return success response
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Image deleted successfully"))
 }

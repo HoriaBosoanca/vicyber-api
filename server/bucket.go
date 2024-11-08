@@ -3,12 +3,14 @@ package server
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
-	"io"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/storage"
+	// "google.golang.org/api/iterator"
 )
 
 func AddImageToBucket(imageData []byte) (string, error) {
@@ -71,3 +73,52 @@ func GetImageFromBucket(imageUrl string) ([]byte, error) {
 
 	return imageData, nil
 }
+
+func DeleteImageFromBucket(imageURL string) error {
+	// Extract the object path from the URL
+	objectPath := "images/" + imageURL[strings.LastIndex(imageURL, "/")+1:]
+	// log.Println("Object Path for deletion:", objectPath)
+
+	// Initialize the Google Cloud Storage client
+	client, err := storage.NewClient(context.Background())
+	if err != nil {
+		log.Println("Error creating storage client:", err)
+		return err
+	}
+	defer client.Close()
+
+	// Create the object handle for the specific object path
+	object := client.Bucket("vicyberbucket").Object(objectPath)
+
+	// Attempt to delete the image from the bucket
+	if err := object.Delete(context.Background()); err != nil {
+		log.Println("Failed to delete image from bucket:", err)
+		return err
+	}
+
+	// log.Println("Image deleted successfully from bucket:", objectPath)
+	return nil
+}
+
+// func ListBucketObjects() {
+//     client, err := storage.NewClient(context.Background())
+//     if err != nil {
+//         log.Fatalf("Failed to create client: %v", err)
+//     }
+//     defer client.Close()
+
+//     bucket := client.Bucket("vicyberbucket")
+//     query := &storage.Query{}
+//     it := bucket.Objects(context.Background(), query)
+
+//     for {
+//         obj, err := it.Next()
+//         if err == iterator.Done {
+//             break
+//         }
+//         if err != nil {
+//             log.Fatalf("Failed to list objects: %v", err)
+//         }
+//         fmt.Printf("Object: %s\n", obj.Name)
+//     }
+// }
