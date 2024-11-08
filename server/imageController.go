@@ -130,6 +130,6 @@ func deleteImage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return success response
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Image deleted successfully"))
+	w.WriteHeader(http.StatusNoContent)
+	// w.Write([]byte("Image deleted successfully"))
 }
