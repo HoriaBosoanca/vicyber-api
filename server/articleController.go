@@ -25,7 +25,8 @@ func HandleArticle(router *mux.Router) {
 type Article struct {
 	ID      uint   `gorm:"primaryKey"`
 	Title   string `gorm:"size:100"`
-	Content string `gorm:"unique;size:1000"`
+	ImageID uint   `gorm:"foreignKey:Image"`
+	Content string `gorm:"size:10000"`
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
