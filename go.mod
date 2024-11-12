@@ -3,6 +3,8 @@ module server
 go 1.23.2
 
 require (
+	cloud.google.com/go/storage v1.46.0
+	github.com/frustra/bbcode v0.0.0-20201127003707-6ef347fbe1c8
 	github.com/gorilla/mux v1.8.1
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.12
@@ -16,7 +18,6 @@ require (
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	cloud.google.com/go/iam v1.2.1 // indirect
 	cloud.google.com/go/monitoring v1.21.1 // indirect
-	cloud.google.com/go/storage v1.46.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.24.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.48.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.48.1 // indirect

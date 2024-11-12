@@ -57,6 +57,12 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Could not fetch articles", http.StatusInternalServerError)
 		return
 	}
+
+	// BBCode
+	for i := range articles {
+        articles[i].Content = parseBBCode(articles[i].Content)
+    }
+
 	// send response
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(articles)
@@ -76,6 +82,10 @@ func getArticleByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Article not found", http.StatusNotFound)
 		return
 	}
+
+	// BBCode
+	article.Content = parseBBCode(article.Content)
+
 	// send response
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(article)
