@@ -22,6 +22,7 @@ func HandleImage(router *mux.Router) {
 type Image struct {
 	ID uint `gorm:"primaryKey"`
 	Data string `json:"data"`
+	Width uint `json:"width"`
 }
 
 func createImage(w http.ResponseWriter, r *http.Request) {
