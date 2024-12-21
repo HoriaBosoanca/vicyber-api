@@ -15,4 +15,4 @@ PUT /article/{id} - submit article to update
 Server expects API key in header and API key env var \
 Server expects postgres database URL env var \
 Server expects port env var \
-Server uses google cloud bucket \
+Server uses google cloud bucket
