@@ -3,7 +3,7 @@ This is a web server deployed to google cloud that I made for my robotics team, 
 
 ## Links
 The client repo is [here](https://github.com/CezarBaluta/viCyber). \
-The live website is [here](vicyber.ro).
+The live website is [here](https://vicyber.ro).
 
 ## Endpoints
 
