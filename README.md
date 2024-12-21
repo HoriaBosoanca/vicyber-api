@@ -2,14 +2,14 @@
 
 # endpoints
 
-POST /article - submit text, return article object (with id) \
-GET /article \
-GET /article/{id} \
+POST /article - submit article without id, return article with id \
+GET /article - get all articles \
+GET /article/{id} - get article by id \
 DELETE /article/{id}
 
 # unused endpoints on client:
 
-PUT /article/{id} - submit article object
+PUT /article/{id} - submit article to update
 
 # notes:
 Server expects API key in header
