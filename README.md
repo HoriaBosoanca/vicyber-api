@@ -7,6 +7,10 @@ GET /article - get all articles \
 GET /article/{id} - get article by id \
 DELETE /article/{id}
 
+POST /image - submit image obj with image data and width \
+GET /image/{id} - get image by id \
+DELETE /image/{id}
+
 ## unused endpoints on client:
 
 PUT /article/{id} - submit article to update
