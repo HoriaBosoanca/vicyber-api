@@ -12,7 +12,7 @@ DELETE /article/{id}
 PUT /article/{id} - submit article to update
 
 ## notes:
-Server expects API key in header
-Server expects postgres database URL env var
-Server expects port env var
-Server uses google cloud bucket
+Server expects API key in header \
+Server expects postgres database URL env var \
+Server expects port env var \
+Server uses google cloud bucket \
