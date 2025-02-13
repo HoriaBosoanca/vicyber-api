@@ -29,6 +29,7 @@ type Article struct {
 	VideoURL 		string `gorm:"size:1000"`
 	VideoWidth		uint   `json:"videowidth"`
 	Content  		string `gorm:"size:10000"`
+	Tags            string `gorm:"size:100"`
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
