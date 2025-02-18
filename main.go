@@ -13,13 +13,12 @@ var router *mux.Router
 func main() {
 	// database conectiviy
 	server.DB = server.ConnectDB()
-	server.DoMigrations(server.DB)
+	server.DB.AutoMigrate(&server.ArticlePost{})
 
 	// route
 	router = mux.NewRouter()
 	router.Use(server.EnableCORS)
 	server.HandleArticle(router)
-	server.HandleImage(router)
 
 	// Listen on port
 	port := os.Getenv("PORT")

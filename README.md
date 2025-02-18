@@ -8,20 +8,10 @@ The live website is [here](https://vicyber.ro).
 ## Endpoints
 
 POST /article - submit article without id, return article with id \
-GET /article - get all articles \
-GET /article/{id} - get article by id \
+GET /article/{category} - get all articles in a category \
 DELETE /article/{id}
-
-POST /image - submit image obj with image data and width \
-GET /image/{id} - get image by id \
-DELETE /image/{id}
-
-## Unused endpoints on client
-
-PUT /article/{id} - submit article to update
 
 ## Notes
 Server expects API key in header and API key env var \
 Server expects postgres database URL env var \
-Server expects port env var \
-Server uses google cloud bucket
+Server expects port env var
